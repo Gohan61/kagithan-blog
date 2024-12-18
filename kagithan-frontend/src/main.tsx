@@ -5,6 +5,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { HomePage } from "./components/HomePage";
 import About from "./components/About";
 import Blogs from "./components/Blogs";
+import SingleBlog from "./components/SingleBlog";
 
 const router = createBrowserRouter([
   {
@@ -14,6 +15,7 @@ const router = createBrowserRouter([
       { index: true, element: <HomePage /> },
       { path: "/about", element: <About /> },
       { path: "/blogs", element: <Blogs /> },
+      { path: "/blog/:file", element: <SingleBlog /> },
     ],
   },
 ]);
