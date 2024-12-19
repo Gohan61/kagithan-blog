@@ -1,11 +1,7 @@
 import { Link } from "react-router-dom";
+import posts from "../posts";
 
 export default function Blogs() {
-  const posts = [
-    { title: "First blog", file: "post1.md" },
-    { title: "Second blog", file: "post2.md" },
-  ];
-
   return (
     <div>
       <h2>Blogs</h2>
