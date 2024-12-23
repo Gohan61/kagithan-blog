@@ -3,12 +3,12 @@ import posts from "../posts";
 
 export default function Blogs() {
   return (
-    <div>
-      <h2>Blogs</h2>
-      <ul>
+    <div className="flex flex-col gap-2 w-[300px] md:w-[600px] ml-auto mr-auto">
+      <h2 className="text-xl font-semibold">Blogs</h2>
+      <ul className="mt-3">
         {posts.map((post) => {
           return (
-            <li key={post.file}>
+            <li key={post.file} className="underline mb-2">
               <Link to={`/blog/${post.file}`}>{post.title}</Link>
             </li>
           );
