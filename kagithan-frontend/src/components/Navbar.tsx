@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 export function Navbar() {
   return (
-    <nav className="bg-slate-700">
+    <nav className="bg-slate-700 mb-3">
       <div className="flex justify-between items-center gap-2 md:w-[600px] ml-auto mr-auto">
         <Link to={"/"}>
           <img src={logo} alt="" className="w-[100px] object-contain" />
