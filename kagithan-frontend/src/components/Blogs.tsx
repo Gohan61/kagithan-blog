@@ -9,7 +9,12 @@ export default function Blogs() {
         {posts.map((post) => {
           return (
             <li key={post.file} className="underline mb-2">
-              <Link to={`/blog/${post.file}`}>{post.title}</Link>
+              <Link
+                to={`/blog/${post.file}`}
+                className="visited:text-purple-800"
+              >
+                {post.title}
+              </Link>
             </li>
           );
         })}
