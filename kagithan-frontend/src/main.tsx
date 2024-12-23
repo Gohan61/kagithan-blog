@@ -6,6 +6,7 @@ import { HomePage } from "./components/HomePage";
 import About from "./components/About";
 import Blogs from "./components/Blogs";
 import SingleBlog from "./components/SingleBlog";
+import "./stylesheets/index.css";
 
 const router = createBrowserRouter([
   {
@@ -23,5 +24,5 @@ const router = createBrowserRouter([
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <RouterProvider router={router}></RouterProvider>
-  </StrictMode>,
+  </StrictMode>
 );
