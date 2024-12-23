@@ -7,10 +7,12 @@ export default function SingleBlog() {
   const [content, setContent] = useState("");
 
   useEffect(() => {
-    import(`../content/${file}`)
+    import(/* @vite-ignore */ `../content/${file}`)
       .then((res) => res.default)
       .then((text) => setContent(text));
   }, [file]);
 
-  return <ReactMarkDown children={content}></ReactMarkDown>;
+  return (
+    <ReactMarkDown className="markdown" children={content}></ReactMarkDown>
+  );
 }
