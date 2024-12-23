@@ -16,3 +16,11 @@
     "Helvetica Neue",
     sans-serif;
 }
+
+.markdown > h1 {
+  @apply text-lg font-semibold;
+}
+
+.markdown > p {
+  @apply mb-2;
+}

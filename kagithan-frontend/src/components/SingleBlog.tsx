@@ -13,6 +13,9 @@ export default function SingleBlog() {
   }, [file]);
 
   return (
-    <ReactMarkDown className="markdown" children={content}></ReactMarkDown>
+    <ReactMarkDown
+      className="markdown flex flex-col gap-2 w-[300px] md:w-[600px] ml-auto mr-auto"
+      children={content}
+    ></ReactMarkDown>
   );
 }
