@@ -7,9 +7,18 @@ export default function SingleBlog() {
   const [content, setContent] = useState("");
 
   useEffect(() => {
-    import(/* @vite-ignore */ `../content/${file}`)
-      .then((res) => res.default)
-      .then((text) => setContent(text));
+    (async () => {
+      try {
+        const response = await fetch(`/content/${file}`);
+        if (!response.ok) {
+          throw new Error("Failed to fetch Markdown file");
+        }
+        const text = await response.text();
+        setContent(text);
+      } catch (error) {
+        console.error(error);
+      }
+    })();
   }, [file]);
 
   return (
