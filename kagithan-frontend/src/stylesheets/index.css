@@ -22,5 +22,9 @@
 }
 
 .markdown > p {
-  @apply mb-2;
+  @apply mb-2 leading-relaxed;
+}
+
+.markdown {
+  @apply mb-10;
 }
