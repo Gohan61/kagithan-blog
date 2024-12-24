@@ -1,5 +1,4 @@
 const posts = [
-  { title: "My first blog post", file: "post1.md" },
-  { title: "My second blog post", file: "post2.md" },
+ { title: "The journey here", file: "blog1.md" },
 ];
-export default posts;
+export default posts
