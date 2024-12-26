@@ -1,4 +1,7 @@
 {
+  "scripts": {
+    "dev": "NODE_ENV=development && npx tsx watch src/app.ts"
+  },
   "devDependencies": {
     "@types/cors": "^2.8.17",
     "@types/express": "^5.0.0",
