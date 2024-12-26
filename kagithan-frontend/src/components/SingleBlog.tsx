@@ -9,14 +9,18 @@ export default function SingleBlog() {
   useEffect(() => {
     (async () => {
       try {
-        const response = await fetch(`/content/${file}`);
-        if (!response.ok) {
-          throw new Error("Failed to fetch Markdown file");
-        }
-        const text = await response.text();
-        setContent(text);
-      } catch (error) {
-        console.error(error);
+        await fetch(`http://localhost:3000/${file}`, {
+          mode: "cors",
+          method: "GET",
+          headers: {
+            "Content-Type": "text/plain",
+          },
+        }).then(async (res) => {
+          const blogText = await res.text();
+          setContent(blogText);
+        });
+      } catch (err) {
+        console.log(err);
       }
     })();
   }, [file]);

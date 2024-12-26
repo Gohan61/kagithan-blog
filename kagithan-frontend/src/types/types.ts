@@ -4,3 +4,5 @@ type post = {
 };
 
 export type postsType = post[];
+
+export type postState = postsType | [];
