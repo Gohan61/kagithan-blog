@@ -13,6 +13,30 @@ interface Env {
   };
 }
 
+interface CustomResponse {
+  errorMessage?: string;
+  status: number;
+  body?: BodyInit | null;
+  headers?: HeadersInit;
+}
+
+function corsHeaders({
+  errorMessage,
+  status,
+  body = null,
+  headers = {},
+}: CustomResponse): Response {
+  const responseHeaders = new Headers(headers);
+  responseHeaders.set("Access-Control-Allow-Origin", "https://kagithan.blog");
+  responseHeaders.set("Access-Control-Allow-Methods", "GET");
+  responseHeaders.set("Access-Control-Allow-Headers", "*");
+
+  return new Response(errorMessage || body, {
+    status,
+    headers: responseHeaders,
+  });
+}
+
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
     const url = new URL(request.url);
@@ -24,20 +48,20 @@ export default {
           const list = await env.blogs_bucket.list();
           const keys: string[] = list.objects.map((obj) => obj.key);
 
-          return new Response(keys.toString());
+          if (keys.length === 0) {
+            return corsHeaders({ errorMessage: "No blogs found", status: 404 });
+          }
+
+          return corsHeaders({ status: 200, body: keys.toString() });
         }
 
         const object = await env.blogs_bucket.get(key);
 
         if (object === null) {
-          return new Response("Object Not Found", { status: 404 });
+          return corsHeaders({ errorMessage: "Object Not Found", status: 404 });
         }
 
-        const headers = new Headers();
-        object.writeHttpMetadata(headers);
-        headers.set("etag", object.httpEtag);
-
-        return new Response(object.body);
+        return corsHeaders({ status: 200, body: object.body });
 
       default:
         return new Response("Method Not Allowed", {
