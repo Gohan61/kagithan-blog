@@ -29,7 +29,7 @@ function corsHeaders({
 }: CustomResponse): Response {
   const responseHeaders = new Headers(headers);
   responseHeaders.set("Access-Control-Allow-Origin", "https://kagithan.blog");
-  responseHeaders.set("Access-Control-Allow-Methods", "GET");
+  responseHeaders.set("Access-Control-Allow-Methods", "GET, PUT");
   responseHeaders.set("Access-Control-Allow-Headers", "*");
 
   return new Response(errorMessage || body, {
@@ -57,12 +57,12 @@ export default {
     const url = new URL(request.url);
     const key: string = url.pathname.slice(1);
 
-    if (!authorizeRequest(request, env, key)) {
-      return corsHeaders({ errorMessage: "Forbidden", status: 403 });
-    }
-
     switch (request.method) {
       case "PUT":
+        if (!authorizeRequest(request, env, key)) {
+          return corsHeaders({ errorMessage: "Forbidden", status: 403 });
+        }
+
         if (!key) {
           return new Response("Blog title is required");
         }
