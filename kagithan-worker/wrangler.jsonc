@@ -1,0 +1,15 @@
+{
+  "name": "kagithan-blog-worker",
+  "compatibility_date": "2025-04-01",
+  "main": "index.ts",
+  "r2_buckets": [
+    {
+      "bucket_name": "kagithan-blogs",
+      "binding": "blogs_bucket"
+    },
+    {
+      "bucket_name": "preview-blogs-bucket",
+      "binding": "preview_blogs_bucket"
+    }
+  ]
+}
