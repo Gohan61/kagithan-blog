@@ -47,6 +47,8 @@ function authorizeRequest(request: Request, env: Env, key: string) {
     case "PUT":
     case "DELETE":
       return hasValidHeader(request, env);
+    case "GET":
+      return true;
     default:
       return false;
   }
@@ -57,12 +59,12 @@ export default {
     const url = new URL(request.url);
     const key: string = url.pathname.slice(1);
 
+    if (!authorizeRequest(request, env, key)) {
+      return corsHeaders({ errorMessage: "Forbidden", status: 403 });
+    }
+
     switch (request.method) {
       case "PUT":
-        if (!authorizeRequest(request, env, key)) {
-          return corsHeaders({ errorMessage: "Forbidden", status: 403 });
-        }
-
         if (!key) {
           return new Response("Blog title is required");
         }
