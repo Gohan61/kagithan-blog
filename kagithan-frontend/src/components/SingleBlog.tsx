@@ -33,7 +33,7 @@ export default function SingleBlog() {
   return (
     <>
       <ReactMarkDown
-        className="markdown flex flex-col gap-2 w-[300px] md:w-[600px] ml-auto mr-auto"
+        className="markdown flex flex-col gap-2 w-[300px] md:w-[600px] ml-auto mr-auto [&_a]:underline [&_a]:text-[#ae1a1a]"
         children={content}
       ></ReactMarkDown>
       {error ? <p>{error}</p> : ""}
