@@ -80,8 +80,10 @@ export default {
           return corsHeaders({ errorMessage: "No blog selected", status: 500 });
         }
 
+        const decodedKey = decodeURIComponent(key);
+
         const createdBlog: boolean = await env.blogs_bucket.put(
-          key,
+          decodedKey,
           blogInBody
         );
 
