@@ -59,7 +59,7 @@ function authorizeRequest(request: Request, env: Env, key: string) {
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
     const url = new URL(request.url);
-    const key: string = url.pathname.slice(1);
+    const key: string = decodeURIComponent(url.pathname.slice(1));
 
     if (!authorizeRequest(request, env, key)) {
       return corsHeaders({ errorMessage: "Forbidden", status: 403 });
@@ -80,10 +80,8 @@ export default {
           return corsHeaders({ errorMessage: "No blog selected", status: 500 });
         }
 
-        const decodedKey = decodeURIComponent(key);
-
         const createdBlog: boolean = await env.blogs_bucket.put(
-          decodedKey,
+          key,
           blogInBody
         );
 
