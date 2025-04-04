@@ -16,6 +16,7 @@ interface Env {
 
 interface CustomResponse {
   errorMessage?: string;
+  message?: string;
   status: number;
   body?: BodyInit | null;
   headers?: HeadersInit;
@@ -23,13 +24,14 @@ interface CustomResponse {
 
 function corsHeaders({
   errorMessage,
+  message,
   status,
   body = null,
   headers = {},
 }: CustomResponse): Response {
   const responseHeaders = new Headers(headers);
   responseHeaders.set("Access-Control-Allow-Origin", "https://kagithan.blog");
-  responseHeaders.set("Access-Control-Allow-Methods", "GET, PUT");
+  responseHeaders.set("Access-Control-Allow-Methods", "GET, PUT, DELETE");
   responseHeaders.set("Access-Control-Allow-Headers", "*");
 
   return new Response(errorMessage || body, {
@@ -66,13 +68,16 @@ export default {
     switch (request.method) {
       case "PUT":
         if (!key) {
-          return new Response("Blog title is required");
+          return corsHeaders({
+            errorMessage: "Blog title is required",
+            status: 500,
+          });
         }
 
         const blogInBody: ArrayBuffer = await request.arrayBuffer();
 
         if (!blogInBody || blogInBody.byteLength === 0) {
-          return new Response("No blog selected");
+          return corsHeaders({ errorMessage: "No blog selected", status: 500 });
         }
 
         const createdBlog: boolean = await env.blogs_bucket.put(
@@ -81,10 +86,16 @@ export default {
         );
 
         if (!createdBlog) {
-          return new Response(`Error updating ${key}`);
+          return corsHeaders({
+            errorMessage: `Error updating ${key}`,
+            status: 404,
+          });
         }
 
-        return new Response(`Updated ${key} successfully!`);
+        return corsHeaders({
+          message: `Updated ${key} successfully!`,
+          status: 200,
+        });
       case "GET":
         if (!key) {
           const list = await env.blogs_bucket.list();
@@ -104,6 +115,26 @@ export default {
         }
 
         return corsHeaders({ status: 200, body: object.body });
+      case "DELETE":
+        if (!key) {
+          return corsHeaders({
+            message: "Blog title is required",
+            status: 500,
+          });
+        }
+
+        const blogPost = await env.blogs_bucket.get(key);
+
+        if (!blogPost) {
+          return corsHeaders({
+            errorMessage: "Requested blog not found",
+            status: 404,
+          });
+        }
+
+        await env.blogs_bucket.delete(key);
+
+        return corsHeaders({ status: 200, message: `Deleted ${key}` });
 
       default:
         return new Response("Method Not Allowed", {
